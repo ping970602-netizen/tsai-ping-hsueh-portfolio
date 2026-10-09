@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>蔡秉斈｜古塔</title>
+<meta name="description" content="蔡秉斈的作品集網站——一座藏著紙條與卷軸的潘洛斯階梯古塔">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏰</text></svg>">
+<link rel="stylesheet" href="style.css?v=6">
+</head>
+<body>
+
+<!-- 滿版古塔場景:stage 與原圖同比例,互動元素以 % 座標對齊 -->
+<div class="scene">
+  <div class="stage" id="stage">
+    <img class="stage-bg" src="assets/images/castle.png" alt="黃昏下的破損古塔,中央是一座潘洛斯階梯">
+    <!-- 蜘蛛/烏鴉/火把/旗幟/紙條/小人 由 JS 疊加 -->
+  </div>
+  <div class="scene-vignette" aria-hidden="true"></div>
+
+  <div class="hud">
+    <span class="hud-progress" id="hudProgress">卷軸 0／4</span>
+    <button class="pixel-btn hud-btn" id="soundBtn" aria-label="音效開關">♪</button>
+  </div>
+
+  <button class="pixel-btn guestbook-btn" id="guestbookBtn">訪客名冊</button>
+</div>
+
+<!-- 開場羊皮紙 -->
+<div class="modal" id="introModal" hidden>
+  <div class="modal-backdrop"></div>
+  <div class="parchment intro-parchment">
+    <h1 class="px-title">旅人啊——</h1>
+    <p>你來到一座被黃昏籠罩的古塔。塔中央的階梯有些古怪：它看起來一直向上，卻永遠繞回原點。</p>
+    <p>塔的主人在四個角落留下了<strong>四張紙條</strong>，每張紙條上有一道關於這座塔的問題。<strong>答案就藏在你眼前的畫面裡</strong>——仔細觀察，答對一題，就能沿階梯前進一格，並解鎖一卷關於塔主人的卷軸。</p>
+    <p>集齊四卷，你就會完全認識他。</p>
+    <div class="intro-actions">
+      <button class="pixel-btn pixel-btn--primary" id="introStart">開始探索</button>
+      <button class="pixel-btn pixel-btn--ghost" id="introSkip">趕時間，直接參觀</button>
+    </div>
+  </div>
+</div>
+
+<!-- 答題紙條 -->
+<div class="modal" id="quizModal" hidden>
+  <div class="modal-backdrop" data-close-quiz></div>
+  <div class="parchment quiz-note">
+    <button class="pixel-close" data-close-quiz aria-label="收起紙條">✕</button>
+    <p class="quiz-label" id="quizLabel">第一張紙條</p>
+    <p class="quiz-question" id="quizQuestion"></p>
+    <div class="quiz-options" id="quizOptions"></div>
+    <p class="quiz-feedback" id="quizFeedback"></p>
+  </div>
+</div>
+
+<!-- 卷軸(章節內容) -->
+<div class="modal" id="scrollModal" hidden>
+  <div class="modal-backdrop" data-close-scroll></div>
+  <div class="scroll-wrap">
+    <div class="scroll-rod scroll-rod--top" aria-hidden="true"></div>
+    <div class="parchment scroll-body" id="scrollBody">
+      <button class="pixel-close" data-close-scroll aria-label="收起卷軸">✕</button>
+      <div id="scrollContent"></div>
+    </div>
+    <div class="scroll-rod scroll-rod--bottom" aria-hidden="true"></div>
+  </div>
+</div>
+
+<!-- 訪客名冊(後門+重新開始) -->
+<div class="modal" id="guestbookModal" hidden>
+  <div class="modal-backdrop" data-close-guestbook></div>
+  <div class="parchment guestbook">
+    <button class="pixel-close" data-close-guestbook aria-label="關閉">✕</button>
+    <h2 class="px-title">訪客名冊</h2>
+    <p class="guestbook-note">趕時間的訪客，可以在這裡直接翻閱四卷卷軸。</p>
+    <div class="guestbook-list" id="guestbookList"></div>
+    <button class="pixel-btn pixel-btn--ghost guestbook-reset" id="resetBtn">⟲ 重新開始探索</button>
+  </div>
+</div>
+
+<!-- 照片全圖檢視 -->
+<div class="modal" id="lightboxModal" hidden>
+  <div class="modal-backdrop" data-close-lightbox></div>
+  <figure class="lightbox-fig">
+    <button class="pixel-close" data-close-lightbox aria-label="關閉全圖">✕</button>
+    <img id="lightboxImg" src="" alt="完整圖片" draggable="false">
+    <figcaption class="lightbox-cap" id="lightboxCap" hidden></figcaption>
+  </figure>
+</div>
+
+<script src="script.js?v=6"></script>
+</body>
+</html>
